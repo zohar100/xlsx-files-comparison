@@ -48,3 +48,13 @@ def get_files_in_matrix(directory, file_names_array) -> list[list[dict]] or Fals
         files_data_list.append(file)
 
     return files_data_list
+
+
+def remove_keys_in_dict(dict_to_remove_keys: dict, keys_to_remove: list) -> dict:
+    if len(keys_to_remove) <= 0:
+        return dict_to_remove_keys
+
+    for key in keys_to_remove:
+        if key in dict_to_remove_keys:
+            del dict_to_remove_keys[key]
+    return dict_to_remove_keys
