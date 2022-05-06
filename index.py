@@ -72,7 +72,7 @@ def remove_keys_in_matrix_of_dict(matrix_of_dicts: list[list[dict]], keys_to_rem
 def get_diff_and_same_in_matrix_of_dicts(list_of_dicts: list[list[dict]], file_names: list[str]) -> dict:
     dict: dict[str, list] = {
         "diffrences": [],
-        "same": []
+        "matches": []
     }
     same_tracker_dict: dict[str, int] = {}
     for file in list_of_dicts:
@@ -87,7 +87,7 @@ def get_diff_and_same_in_matrix_of_dicts(list_of_dicts: list[list[dict]], file_n
                             same_tracker_dict[str_row] = 1
                         elif str_row in same_tracker_dict and same_tracker_dict[str_row] == (len(list_of_dicts) - 1):
                             same_tracker_dict[str_row] += 1
-                            dict["same"].append(row)
+                            dict["matches"].append(row)
                         else:
                             same_tracker_dict[str_row] += 1
     return dict
@@ -130,3 +130,40 @@ def compare_xlsx_files(directory_of_files: str = "./reports", columns_to_ignore:
     create_directory_for_diff_files(new_directory_name)
 
     return save_dict_of_files(files_diff, new_directory_name)
+
+
+def print_cli_headers():
+    line = "###########################################################################"
+    title = "XLSX FILES COMPARISON"
+    line_mins_title = line[:int((len(line) - len(title)) / 2) - 1]
+    print(line)
+    print(f"{line_mins_title} {title} {line_mins_title}")
+    print(line, '\n')
+
+
+def get_directory_name_from_user():
+    directory_of_files = input(
+        "Enter path to the directory where the files are located or press Enter to use default location (default='./reports'): \n")
+    if not directory_of_files:
+        directory_of_files = "./reports"
+    return directory_of_files
+
+
+def get_columns_to_ignore_from_user():
+    columns_to_ignore = input(
+        "Enter columns to ignore(use ',' for separate) or press Enter to compare all columns: \n")
+    if not columns_to_ignore:
+        columns_to_ignore = []
+    else:
+        columns_to_ignore = columns_to_ignore.split(",")
+    return columns_to_ignore
+
+
+if __name__ == "__main__":
+    print_cli_headers()
+
+    directory_of_files = get_directory_name_from_user()
+
+    columns_to_ignore = get_columns_to_ignore_from_user()
+
+    compare_xlsx_files(directory_of_files, columns_to_ignore)
