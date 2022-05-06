@@ -58,3 +58,12 @@ def remove_keys_in_dict(dict_to_remove_keys: dict, keys_to_remove: list) -> dict
         if key in dict_to_remove_keys:
             del dict_to_remove_keys[key]
     return dict_to_remove_keys
+
+
+def remove_keys_in_matrix_of_dict(matrix_of_dicts: list[list[dict]], keys_to_remove: list[str]) -> list[list[dict]]:
+    if len(keys_to_remove) <= 0:
+        return matrix_of_dicts
+    for list in matrix_of_dicts:
+        for dict in list:
+            dict = remove_keys_in_dict(dict, keys_to_remove)
+    return matrix_of_dicts
