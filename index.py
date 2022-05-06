@@ -20,3 +20,15 @@ def get_file_names(directory: str, files_type: str) -> list or False:
         return file_names
     except Exception:
         return False
+
+
+def read_xlsx_file(directory: str, file_name: str) -> dict or False:
+    try:
+        pre = os.path.dirname(os.path.realpath(__file__))
+        path = os.path.join(pre, directory, file_name)
+        data = pd.read_excel(path).to_dict('records')
+
+        return data
+
+    except Exception as e:
+        return False
