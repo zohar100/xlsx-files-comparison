@@ -91,3 +91,10 @@ def get_diff_and_same_in_matrix_of_dicts(list_of_dicts: list[list[dict]], file_n
                         else:
                             same_tracker_dict[str_row] += 1
     return dict
+
+
+def create_directory_for_diff_files(directory_name: str):
+    pre = os.path.dirname(os.path.realpath(__file__))
+    path = os.path.join(pre, directory_name)
+    if not os.path.exists(path):
+        os.makedirs(path)
