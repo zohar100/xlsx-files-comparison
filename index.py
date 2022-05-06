@@ -98,3 +98,13 @@ def create_directory_for_diff_files(directory_name: str):
     path = os.path.join(pre, directory_name)
     if not os.path.exists(path):
         os.makedirs(path)
+
+
+def save_dict_of_files(dictionary: dict[str, list], directory: str = "diff_files"):
+    pre = os.path.dirname(os.path.realpath(__file__))
+    for file_name, values in dictionary.items():
+        df = pd.DataFrame(values)
+        path = os.path.join(pre, directory, f"{file_name}.xlsx")
+        writer = pd.ExcelWriter(path, engine='xlsxwriter')
+        df.to_excel(writer, sheet_name='Data', index=False)
+        writer.save()
