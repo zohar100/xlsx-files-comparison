@@ -130,3 +130,19 @@ def compare_xlsx_files(directory_of_files: str = "./reports", columns_to_ignore:
     create_directory_for_diff_files(new_directory_name)
 
     return save_dict_of_files(files_diff, new_directory_name)
+    
+
+if __name__ == "__main__":
+    directory_of_files = input(
+        "Enter path to the directory where the files are located or press Enter to use default location (default='./reports'): ")
+    if not directory_of_files:
+        directory_of_files = "./reports"
+
+    columns_to_ignore = input(
+        "Enter columns to ignore(use ',' for separate) or press Enter to compare all columns: ")
+    if not columns_to_ignore:
+        columns_to_ignore = []
+    else:
+        columns_to_ignore = columns_to_ignore.split(",")
+
+    compare_xlsx_files(directory_of_files, columns_to_ignore)
