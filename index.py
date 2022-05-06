@@ -20,3 +20,31 @@ def get_file_names(directory: str, files_type: str) -> list or False:
         return file_names
     except Exception:
         return False
+
+
+def read_xlsx_file(directory: str, file_name: str) -> dict or False:
+    try:
+        pre = os.path.dirname(os.path.realpath(__file__))
+        path = os.path.join(pre, directory, file_name)
+        data = pd.read_excel(path).to_dict('records')
+
+        return data
+
+    except Exception as e:
+        return False
+
+
+def get_files_in_matrix(directory, file_names_array) -> list[list[dict]] or False:
+    if len(file_names_array) <= 0:
+        return False
+
+    files_data_list = []
+    for file_name in file_names_array:
+        file = read_xlsx_file(directory, file_name)
+
+        if not file:
+            return False
+
+        files_data_list.append(file)
+
+    return files_data_list
