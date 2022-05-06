@@ -100,7 +100,7 @@ def create_directory_for_diff_files(directory_name: str):
         os.makedirs(path)
 
 
-def save_dict_of_files(dictionary: dict[str, list], directory: str = "diff_files"):
+def save_dict_of_files(dictionary: dict[str, list], directory: str = "diff_files") -> None:
     pre = os.path.dirname(os.path.realpath(__file__))
     for file_name, values in dictionary.items():
         df = pd.DataFrame(values)
@@ -108,3 +108,25 @@ def save_dict_of_files(dictionary: dict[str, list], directory: str = "diff_files
         writer = pd.ExcelWriter(path, engine='xlsxwriter')
         df.to_excel(writer, sheet_name='Data', index=False)
         writer.save()
+
+
+def compare_xlsx_files(directory_of_files: str = "./reports", columns_to_ignore: list[str] = []) -> None:
+    file_names = get_file_names(directory_of_files, "xlsx")
+    if not file_names:
+        return print("No files found.")
+
+    files_list = get_files_in_matrix(directory_of_files, file_names)
+    if not files_list:
+        return print("Error reading files.")
+
+    files_list_after_removing_keys = remove_keys_in_matrix_of_dict(
+        files_list, columns_to_ignore)
+
+    files_diff = get_diff_and_same_in_matrix_of_dicts(
+        files_list_after_removing_keys, file_names)
+
+    new_directory_name = "diff_files"
+
+    create_directory_for_diff_files(new_directory_name)
+
+    return save_dict_of_files(files_diff, new_directory_name)
