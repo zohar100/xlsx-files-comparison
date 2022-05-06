@@ -67,3 +67,27 @@ def remove_keys_in_matrix_of_dict(matrix_of_dicts: list[list[dict]], keys_to_rem
         for dict in list:
             dict = remove_keys_in_dict(dict, keys_to_remove)
     return matrix_of_dicts
+
+
+def get_diff_and_same_in_matrix_of_dicts(list_of_dicts: list[list[dict]], file_names: list[str]) -> dict:
+    dict: dict[str, list] = {
+        "diffrences": [],
+        "same": []
+    }
+    same_tracker_dict: dict[str, int] = {}
+    for file in list_of_dicts:
+        for file_tow in list_of_dicts:
+            if list_of_dicts.index(file_tow) != list_of_dicts.index(file):
+                for row in file:
+                    if row not in file_tow and row not in dict['diffrences']:
+                        dict["diffrences"].append(row)
+                    elif row not in dict['diffrences']:
+                        str_row = str(row.copy())
+                        if str_row not in same_tracker_dict:
+                            same_tracker_dict[str_row] = 1
+                        elif str_row in same_tracker_dict and same_tracker_dict[str_row] == (len(list_of_dicts) - 1):
+                            same_tracker_dict[str_row] += 1
+                            dict["same"].append(row)
+                        else:
+                            same_tracker_dict[str_row] += 1
+    return dict
